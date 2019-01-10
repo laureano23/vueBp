@@ -1,0 +1,2 @@
+#ignoramos las librerias externas
+node_modules/*
