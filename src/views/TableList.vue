@@ -8,33 +8,7 @@
         vertical
       ></v-divider>
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.codigo" label="Codigo"></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedItem.descripcion" label="Descripción"></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <formDialog v-bind:editedItem="editedItem" v-bind:editedIndex="editedIndex"></formDialog>
     </v-toolbar>
     <v-data-table
       :headers="headers"
@@ -68,14 +42,17 @@
 </template>
 
 <script>
+import formDialog from '@/components/app/FormDialogArticulos'
+
   export default {
+    components:{
+      'formDialog': formDialog
+    },    
     data: () => ({
-      dialog: false,
       headers: [
         { text: 'Codigo', value: 'codigo' },
         { text: 'Descripcion', value: 'descripcion' },
       ],
-      //articulos: [],
       editedIndex: -1,
       editedItem: {
         codigo: '',
@@ -118,33 +95,17 @@
       editItem (item) {
         this.editedIndex = this.articulos.indexOf(item)
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        
+        this.$store.dispatch('articulos/changeDialogState')
       },
 
       deleteItem (item) {
         const index = this.articulos.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.articulos.splice(index, 1)
+        //confirm('Are you sure you want to delete this item?') && this.articulos.splice(index, 1)
+        this.$store.dispatch('articulos/deleteItem', {index: index, item: item})
       },
 
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          this.$store.dispatch('articulos/saveEditedArt', {item: this.editedItem, index: this.editedIndex})
-          //Object.assign(this.articulos[this.editedIndex], this.editedItem)
-        } else {
-          console.log(this.editedItem)
-          this.$store.dispatch('articulos/saveAddedArt', this.editedItem)
-          //this.articulos.push(this.editedItem)
-        }
-        this.close()
-      }
+      
     }
   }
 </script>

@@ -21,11 +21,11 @@ export default {
   created: function(){
     var me=this;
     axios.interceptors.response.use(function(resp){
-      console.log(resp)
         me.$store.commit('setSnack', 'Proceso exitoso')
         return Promise.resolve(resp)
     }, function(error) {
         me.$store.commit('setSnack', 'Ocurrió un Error')
+        return Promise.resolve(error)
     });
   }
 }
