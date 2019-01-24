@@ -53,12 +53,7 @@ export default {
         showForm(){
             this.$store.dispatch('articulos/changeDialogState')
         },
-        close () {
-            // this.dialog = false
-            // setTimeout(() => {
-            // this.editedItem = Object.assign({}, this.defaultItem)
-            // this.editedIndex = -1
-            // }, 300)
+        close () { 
             this.$store.dispatch('articulos/changeDialogState')
         },
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import config from '@/services/config'
 
-const env=null;
+var env=null;
 if(process.env.NODE_ENV==='development'){
     env=config.entryDev
 }else{
@@ -24,15 +24,13 @@ export default{
         return axios(options)
     },
     getArticulos(){
-        console.log(process.env.NODE_ENV)
-        console.log(env)
         const options = {
             method: 'GET',
             headers: {
                 'content-type': 'application/form-data',
                 'X-Custom-Auth': 'laureano'
             },
-            url: config.host+config.en+'articulos/extranet/articuloslist',
+            url: config.host+env+'articulos/extranet/articuloslist',
         };
         return axios(options)
     },

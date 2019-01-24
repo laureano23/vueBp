@@ -1,11 +1,11 @@
 <template>
   <v-app>
     <SnackBar></SnackBar>
-    <core-filter />
+    <core-filter v-if="isAuthenticated"/>
 
-    <core-toolbar />
+    <core-toolbar v-if="isAuthenticated"/>
 
-    <core-drawer />
+    <core-drawer v-if="isAuthenticated"/>
 
     <core-view />
   </v-app>
@@ -15,6 +15,11 @@
 import SnackBar from '@/components/material/SnackBar.vue'
 import axios from 'axios'
 export default {
+  data(){
+    return{
+      isAuthenticated: false
+    }
+  },
   components: {
     SnackBar
   },

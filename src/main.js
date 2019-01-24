@@ -6,7 +6,13 @@ import Vue from 'vue'
 import './components'
 
 // Plugins
-import './plugins'
+import {  } from './plugins'
+
+const token = localStorage.getItem('token')
+if (token) {
+  axios.defaults.headers.common['Authorization'] = token
+}
+
 
 // Sync router with store
 import { sync } from 'vuex-router-sync'
@@ -21,6 +27,7 @@ import store from '@/store'
 sync(store, router)
 
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({
